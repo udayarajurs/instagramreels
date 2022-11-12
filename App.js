@@ -7,10 +7,15 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import React, {useRef} from 'react';
 import Video from 'react-native-video';
 import imagePath from './src/constants/imagePath';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import {data} from './src/constants/data';
+
+const {height, width} = Dimensions.get('window');
 
 const App = () => {
   const videoRef = useRef(null);
@@ -23,22 +28,35 @@ const App = () => {
     console.log('error raised', e);
   };
 
+  const renderItem = () => {
+    return (
+      <View style={{flex: 1}}>
+        <Video
+          source={{
+            uri: 'https://firebasestorage.googleapis.com/v0/b/sconti-e7f3a.appspot.com/o/campusreels%2F%23nadiya%20%23river%20%23songs%20%23song%23hindi%20%23hindisong%20%23nature%20%23naturelovers%20%23mountains%20%23valley%20%23reels%20%23hills.mp4?alt=media&token=adec9231-d02d-41ea-821a-3d3017716baf',
+          }}
+          poster="https://firebasestorage.googleapis.com/v0/b/sconti-e7f3a.appspot.com/o/campusreels%2Fwp2337141.jpg?alt=media&token=703f4391-38ee-4635-8eb1-5b62a8ca0c60"
+          posterResizeMode="cover"
+          ref={videoRef}
+          resizeMode="cover"
+          onBuffer={onBuffer}
+          onError={onError}
+          paused={true}
+          repeat
+          style={styles.backgroundVideo}
+        />
+      </View>
+    );
+  };
+
   return (
-    <View style={{flex: 1, backgroundColor: 'black'}}>
+    <View style={{flex: 1, backgroundColor: 'pink'}}>
       <StatusBar barStyle="light-content" />
-      <Video
-        source={{
-          uri: 'https://firebasestorage.googleapis.com/v0/b/sconti-e7f3a.appspot.com/o/campusreels%2F%23nadiya%20%23river%20%23songs%20%23song%23hindi%20%23hindisong%20%23nature%20%23naturelovers%20%23mountains%20%23valley%20%23reels%20%23hills.mp4?alt=media&token=adec9231-d02d-41ea-821a-3d3017716baf',
-        }}
-        poster="https://firebasestorage.googleapis.com/v0/b/sconti-e7f3a.appspot.com/o/campusreels%2Fwp2337141.jpg?alt=media&token=703f4391-38ee-4635-8eb1-5b62a8ca0c60"
-        posterResizeMode="cover"
-        ref={videoRef}
-        resizeMode="cover"
-        onBuffer={onBuffer}
-        onError={onError}
-        paused={true}
-        repeat
-        style={styles.backgroundVideo}
+
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
       />
 
       <SafeAreaView style={{margin: 16}}>
@@ -50,7 +68,7 @@ const App = () => {
           />
         </View>
       </SafeAreaView>
-
+      {/* 
       <View style={styles.bootomView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
@@ -64,8 +82,93 @@ const App = () => {
             <Text style={{}}>Follow</Text>
           </TouchableOpacity>
         </View>
-        <Text>kjdhjkdhn dajsdnjaksdhnkjsad asdkjbhsak</Text>
-      </View>
+        <View style={{flexDirection: 'row', marginTop: 8}}>
+          <Text numberOfLines={1} style={{flex: 1}}>
+            kjdhjkdhn dajsdnjaksdhnkjsad asdkjbhsak
+          </Text>
+          <TouchableOpacity>
+            <Text>more</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{...styles.flexHorziontal, marginVertical: 8}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: 'white',
+                marginHorizontal: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: 'white',
+                marginHorizontal: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: 'white',
+                marginHorizontal: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: 'white',
+                marginHorizontal: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: 'white',
+                marginHorizontal: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={{
+                width: 15,
+                height: 15,
+                tintColor: 'white',
+                marginTop: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Text style={{marginLeft: 4, color: 'white', marginTop: 10}}>
+              16.6k
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={{
+                width: 15,
+                height: 15,
+                tintColor: 'white',
+                marginTop: 10,
+              }}
+              source={imagePath.icCamera}
+            />
+            <Text style={{marginLeft: 4, color: 'white', marginTop: 10}}>
+              16.6k
+            </Text>
+          </View>
+        </View>
+      </View> */}
     </View>
   );
 };
