@@ -58,7 +58,7 @@ const App = () => {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/sconti-e7f3a.appspot.com/o/campusreels%2Fdownload.jpg?alt=media&token=43bf2206-e39f-4f8b-be8a-949ee46cc65b',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/images.jpg?alt=media&token=946ade41-2527-44e0-9892-40f6a4c199ac',
               }}
               style={styles.profileStyle}
             />
