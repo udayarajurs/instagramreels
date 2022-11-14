@@ -53,7 +53,7 @@ function AddPost() {
       mediaType: 'video',
     }).then(video => {
       if (video.duration < 11165000) {
-        //setVideo(video.path);
+        //setVideo(video.path);   // select wich one
         //VideoConvert(video.path);
         //videoConvert2(video.path);
       } else {
@@ -91,7 +91,6 @@ function AddPost() {
     });
 
     try {
-      console.log('khjh' + blob);
       await storage()
         .ref('Posts/' + filename)
         .put(blob);
