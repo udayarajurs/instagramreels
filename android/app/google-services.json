@@ -1,0 +1,34 @@
+{
+  "project_info": {
+    "project_number": "310101506890",
+    "project_id": "memory-352617",
+    "storage_bucket": "memory-352617.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310101506890:android:9379296832f18fb4e49fb3",
+        "android_client_info": {
+          "package_name": "com.instagramreels"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHkGt4466ay1wTdUPCw3GpZdmUH_Ra_bI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310101506890-ps8kjro18ta1ad1vcg7i9sfpcn1tcqia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
