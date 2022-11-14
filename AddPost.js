@@ -7,28 +7,15 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 import Video from 'react-native-video';
 import storage from '@react-native-firebase/storage';
+import RNVideoHelper from 'react-native-video-helper';
 
 function AddPost() {
   const videoRef = useRef(null);
   const [video, setVideo] = useState();
   const [afterVideoC, setAfterVideoC] = useState(null);
 
-  const AddVideo = () => {
-    ImagePicker.openPicker({
-      mediaType: 'video',
-    }).then(video => {
-      if (video.duration < 11165000) {
-        setVideo(video.path);
-        VideoConvert(video.path);
-      } else {
-        alert('Video should be less than 60 seconds');
-      }
-    });
-  };
-
-  console.log('Video : ' + video);
-
   const VideoConvert = async video1 => {
+    // VideoCompress 1
     await VideoCompress.compress(
       video1,
       {
@@ -43,6 +30,39 @@ function AddPost() {
       console.log('comper', compressedFileUrl);
     });
   };
+
+  const videoConvert2 = sourceUri1 => {
+    // VideoCompress 2
+    RNVideoHelper.compress(sourceUri1, {
+      // startTime: 10, // optional, in seconds, defaults to 0
+      //  endTime: 100, //  optional, in seconds, defaults to video duration
+      quality: 'high', // default low, can be medium or high
+      defaultOrientation: 0, // By default is 0, some devices not save this property in metadata. Can be between 0 - 360
+    })
+      .progress(value => {
+        console.log('progress', value); // Int with progress value from 0 to 1
+      })
+      .then(compressedUri => {
+        console.log('compressedUri', compressedUri); // String with path to temporary compressed video
+        setAfterVideoC(`${'file://' + compressedUri}`);
+      });
+  };
+
+  const AddVideo = () => {
+    ImagePicker.openPicker({
+      mediaType: 'video',
+    }).then(video => {
+      if (video.duration < 11165000) {
+        //setVideo(video.path);
+        //VideoConvert(video.path);
+        //videoConvert2(video.path);
+      } else {
+        alert('Video should be less than 60 seconds');
+      }
+    });
+  };
+
+  console.log('Video : ' + afterVideoC);
 
   const onBuffer = e => {
     console.log('buffering....', e);
@@ -71,6 +91,7 @@ function AddPost() {
     });
 
     try {
+      console.log('khjh' + blob);
       await storage()
         .ref('Posts/' + filename)
         .put(blob);
