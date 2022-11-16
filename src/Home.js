@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Video from 'react-native-video';
-import imagePath from './src/constants/imagePath';
+import imagePath from './constants/imagePath';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
-import {data} from './src/constants/data';
+import {data} from './constants/data';
 import LinearGradient from 'react-native-linear-gradient';
 
 const {height, width} = Dimensions.get('window');
