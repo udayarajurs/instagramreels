@@ -13,6 +13,13 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="AddPost"
           component={AddPost}
           options={{
@@ -23,13 +30,6 @@ function App() {
         <Stack.Screen
           name="VideoCompress"
           component={VideoCompress}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
           options={{
             headerShown: false,
           }}

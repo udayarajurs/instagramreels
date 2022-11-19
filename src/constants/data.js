@@ -7,6 +7,8 @@ export const data = [
     thumb:
       'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/1bd47eda717becda1e3959c45588ca8a.jpg?alt=media&token=90126b4c-9864-469e-92f7-f1e64f5acdc6',
     title: 'jkasdhasikd',
+    profile:
+      'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/-mrScgc3_400x400.jpg?alt=media&token=ea864120-f89e-4964-822d-2f1df5932637',
   },
   {
     description:
@@ -16,6 +18,8 @@ export const data = [
     thumb:
       'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/4802535.jpg?alt=media&token=70af085f-77f2-4c63-800f-7ca9274ea4d4',
     title: 'jkasdhasikd',
+    profile:
+      'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/ganesh-20190726101918-2789.jpg?alt=media&token=f3bb5224-8850-4e7c-a706-2ca77f85f11f',
   },
   {
     description:
@@ -25,6 +29,8 @@ export const data = [
     thumb:
       'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/HD-wallpaper-hills-mountain-ocean-natural-nature-view-day-good.jpg?alt=media&token=7783b005-2a41-4364-baab-740db79a9211',
     title: 'jkasdhasikd',
+    profile:
+      'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/images.jpg?alt=media&token=dcca36fe-8767-451d-ba87-0a3a3d2007d8',
   },
   {
     description:
@@ -34,5 +40,7 @@ export const data = [
     thumb:
       'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/forest-2160x3840-5k-4k-wallpaper-8k-mist-hills-fog-6505.jpg?alt=media&token=118b7841-472c-4767-9e0c-e418c9d957df',
     title: 'jkasdhasikd',
+    profile:
+      'https://firebasestorage.googleapis.com/v0/b/memory-352617.appspot.com/o/images.jpg?alt=media&token=946ade41-2527-44e0-9892-40f6a4c199ac',
   },
 ];
