@@ -25,6 +25,7 @@ const Home = () => {
   const [recentVideo, setRecentVideo] = useState([]);
   const [videos, setVideos] = useState([]);
   const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
+  let LoginID = '123456B';
 
   const onBuffer = e => {
     console.log('buffering....', e);
@@ -199,10 +200,16 @@ const Home = () => {
                           .get()
                           .then(querySnapshot => {
                             if (querySnapshot.size > 0) {
-                              querySnapshot.forEach(doc => {
-                                if (doc._data.userID === '123456B') {
-                                  console.log('like delete');
-                                  doc.ref
+                              querySnapshot.forEach(docLikeID => {
+                                if (docLikeID._data.userID === LoginID) {
+                                  console.log('like delete', doc.id);
+                                  firestore()
+                                    .collection('compassreal')
+                                    .doc(doc.id)
+                                    .update({
+                                      LikeCount: item.LikeCount - 1,
+                                    });
+                                  docLikeID.ref
                                     .delete()
                                     .then(() => {
                                       console.log(
@@ -226,10 +233,16 @@ const Home = () => {
                                         firestore()
                                           .collection('compassreal')
                                           .doc(doc.id)
+                                          .update({
+                                            LikeCount: item.LikeCount + 1,
+                                          });
+                                        firestore()
+                                          .collection('compassreal')
+                                          .doc(doc.id)
                                           .collection('Likes')
                                           .add({
                                             name: 'Udaya raj urs G',
-                                            userID: '123456B',
+                                            userID: LoginID,
                                             PostID: item.PostID,
                                             CreateAt: new Date(),
                                           });
@@ -254,10 +267,14 @@ const Home = () => {
                                     firestore()
                                       .collection('compassreal')
                                       .doc(doc.id)
+                                      .update({LikeCount: item.LikeCount + 1});
+                                    firestore()
+                                      .collection('compassreal')
+                                      .doc(doc.id)
                                       .collection('Likes')
                                       .add({
                                         name: 'Udaya raj urs G',
-                                        userID: '123456B',
+                                        userID: LoginID,
                                         PostID: item.PostID,
                                         CreateAt: new Date(),
                                       });
@@ -282,7 +299,6 @@ const Home = () => {
                     width: 25,
                     height: 25,
                     tintColor: 'white',
-
                     marginVertical: 15,
                   }}
                   source={imagePath.icLike}
