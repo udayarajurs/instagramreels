@@ -20,10 +20,10 @@ const {height, width} = Dimensions.get('window');
 
 const Home = () => {
   const videoRef = useRef(null);
-  const VIDEO_LIMIT = 2;
+  const VIDEO_LIMIT = 1;
   const [currIndex, setIndex] = useState(0);
   const [recentVideo, setRecentVideo] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
 
   const onBuffer = e => {
@@ -35,6 +35,19 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // firestore()
+    //   .collection('compassreal')
+    //   .where('PostID', '==', 'Post123456C')
+    //   .get()
+    //   .then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //       console.log(doc.id);
+    //     });
+    //   })
+    //   .catch(error => {
+    //     console.log('Error getting documents: ', error);
+    //   });
+
     if (!videoRef.current && recentVideo.length > 0) {
       videoRef.current.seek(0);
     }
@@ -91,13 +104,12 @@ const Home = () => {
   }, [currIndex]);
 
   const onChatListEndReached = () => {
-    console.log('call');
     if (!moreVideoAvailable) {
       return;
     }
     let startAfterTime;
-    if (messages.length > 0) {
-      startAfterTime = messages[messages.length - 1].createdAt;
+    if (videos.length > 0) {
+      startAfterTime = videos[videos.length - 1].createdAt;
     } else if (recentVideo.length > 0) {
       startAfterTime = recentVideo[recentVideo.length - 1].createdAt;
     } else {
@@ -135,12 +147,11 @@ const Home = () => {
         if (video.length === 0) {
           setMoreVideoAvailable(false);
         } else {
-          setMessages([...messages, ...video]);
+          setVideos([...videos, ...video]);
         }
       });
   };
 
-  console.log(recentVideo.length, messages.length);
   {
     moreVideoAvailable ? '' : console.log('no more video');
   }
@@ -173,16 +184,112 @@ const Home = () => {
               marginBottom: 75,
             }}>
             <View style={{position: 'absolute', right: 0}}>
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: 'white',
+              <TouchableOpacity
+                onPress={() => {
+                  firestore()
+                    .collection('compassreal')
+                    .where('PostID', '==', item.PostID)
+                    .get()
+                    .then(querySnapshot => {
+                      querySnapshot.forEach(doc => {
+                        firestore()
+                          .collection('compassreal')
+                          .doc(doc.id)
+                          .collection('Likes')
+                          .get()
+                          .then(querySnapshot => {
+                            if (querySnapshot.size > 0) {
+                              querySnapshot.forEach(doc => {
+                                if (doc._data.userID === '123456B') {
+                                  console.log('like delete');
+                                  doc.ref
+                                    .delete()
+                                    .then(() => {
+                                      console.log(
+                                        'Document successfully deleted!',
+                                      );
+                                    })
+                                    .catch(function (error) {
+                                      console.error(
+                                        'Error removing document: ',
+                                        error,
+                                      );
+                                    });
+                                } else {
+                                  console.log('Add like');
+                                  firestore()
+                                    .collection('compassreal')
+                                    .where('PostID', '==', item.PostID)
+                                    .get()
+                                    .then(querySnapshot => {
+                                      querySnapshot.forEach(doc => {
+                                        firestore()
+                                          .collection('compassreal')
+                                          .doc(doc.id)
+                                          .collection('Likes')
+                                          .add({
+                                            name: 'Udaya raj urs G',
+                                            userID: '123456B',
+                                            PostID: item.PostID,
+                                            CreateAt: new Date(),
+                                          });
+                                      });
+                                    })
+                                    .catch(error => {
+                                      console.log(
+                                        'Error getting documents: ',
+                                        error,
+                                      );
+                                    });
+                                }
+                              });
+                            } else {
+                              console.log('first like add');
+                              firestore()
+                                .collection('compassreal')
+                                .where('PostID', '==', item.PostID)
+                                .get()
+                                .then(querySnapshot => {
+                                  querySnapshot.forEach(doc => {
+                                    firestore()
+                                      .collection('compassreal')
+                                      .doc(doc.id)
+                                      .collection('Likes')
+                                      .add({
+                                        name: 'Udaya raj urs G',
+                                        userID: '123456B',
+                                        PostID: item.PostID,
+                                        CreateAt: new Date(),
+                                      });
+                                  });
+                                })
+                                .catch(error => {
+                                  console.log(
+                                    'Error getting documents: ',
+                                    error,
+                                  );
+                                });
+                            }
+                          });
+                      });
+                    })
+                    .catch(error => {
+                      console.log('Error getting documents: ', error);
+                    });
+                }}>
+                <Image
+                  style={{
+                    width: 25,
+                    height: 25,
+                    tintColor: 'white',
 
-                  marginVertical: 15,
-                }}
-                source={imagePath.icLike}
-              />
+                    marginVertical: 15,
+                  }}
+                  source={imagePath.icLike}
+                />
+                <Text style={{color: '#FFF'}}>{item.LikeCount}</Text>
+              </TouchableOpacity>
+
               <Image
                 style={{
                   width: 25,
@@ -243,7 +350,7 @@ const Home = () => {
 
       <SwiperFlatList
         vertical={true}
-        data={[...recentVideo, ...messages]}
+        data={[...recentVideo, ...videos]}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         onChangeIndex={onChangeIndex}
