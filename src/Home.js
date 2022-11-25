@@ -15,12 +15,13 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {data} from './constants/data';
 import LinearGradient from 'react-native-linear-gradient';
 import firestore from '@react-native-firebase/firestore';
+import VideoPlay from './VideoPlay';
 
 const {height, width} = Dimensions.get('window');
 
-const Home = () => {
+const Home = ({navigation}) => {
   const videoRef = useRef(null);
-  const VIDEO_LIMIT = 1;
+  const VIDEO_LIMIT = 2;
   const [currIndex, setIndex] = useState(0);
   const [recentVideo, setRecentVideo] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -36,23 +37,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // firestore()
-    //   .collection('compassreal')
-    //   .where('PostID', '==', 'Post123456C')
-    //   .get()
-    //   .then(querySnapshot => {
-    //     querySnapshot.forEach(doc => {
-    //       console.log(doc.id);
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.log('Error getting documents: ', error);
-    //   });
-
-    if (!videoRef.current && recentVideo.length > 0) {
-      videoRef.current.seek(0);
-    }
-
     if (recentVideo.length === 0) {
       const messageRef = firestore()
         .collection('compassreal')
@@ -157,205 +141,6 @@ const Home = () => {
     moreVideoAvailable ? '' : console.log('no more video');
   }
 
-  const renderItem = ({item, index}) => {
-    return (
-      <View style={{flex: 1, height: height}}>
-        <Video
-          source={{
-            uri: item.videoLink,
-          }}
-          poster={item.ThubLine}
-          posterResizeMode="cover"
-          ref={videoRef}
-          resizeMode="cover"
-          onBuffer={onBuffer}
-          onError={onError}
-          //paused={currIndex !== index}
-          paused={true}
-          repeat
-          style={styles.backgroundVideo}
-        />
-        <LinearGradient
-          colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.6)']}
-          style={styles.bootomView}>
-          <View
-            style={{
-              ...styles.flexHorziontal,
-              marginVertical: 8,
-              marginBottom: 75,
-            }}>
-            <View style={{position: 'absolute', right: 0}}>
-              <TouchableOpacity
-                onPress={() => {
-                  firestore()
-                    .collection('compassreal')
-                    .where('PostID', '==', item.PostID)
-                    .get()
-                    .then(querySnapshot => {
-                      querySnapshot.forEach(doc => {
-                        firestore()
-                          .collection('compassreal')
-                          .doc(doc.id)
-                          .collection('Likes')
-                          .get()
-                          .then(querySnapshot => {
-                            if (querySnapshot.size > 0) {
-                              querySnapshot.forEach(docLikeID => {
-                                if (docLikeID._data.userID === LoginID) {
-                                  console.log('like delete', doc.id);
-                                  firestore()
-                                    .collection('compassreal')
-                                    .doc(doc.id)
-                                    .update({
-                                      LikeCount: item.LikeCount - 1,
-                                    });
-                                  docLikeID.ref
-                                    .delete()
-                                    .then(() => {
-                                      console.log(
-                                        'Document successfully deleted!',
-                                      );
-                                    })
-                                    .catch(function (error) {
-                                      console.error(
-                                        'Error removing document: ',
-                                        error,
-                                      );
-                                    });
-                                } else {
-                                  console.log('Add like');
-                                  firestore()
-                                    .collection('compassreal')
-                                    .where('PostID', '==', item.PostID)
-                                    .get()
-                                    .then(querySnapshot => {
-                                      querySnapshot.forEach(doc => {
-                                        firestore()
-                                          .collection('compassreal')
-                                          .doc(doc.id)
-                                          .update({
-                                            LikeCount: item.LikeCount + 1,
-                                          });
-                                        firestore()
-                                          .collection('compassreal')
-                                          .doc(doc.id)
-                                          .collection('Likes')
-                                          .add({
-                                            name: 'Udaya raj urs G',
-                                            userID: LoginID,
-                                            PostID: item.PostID,
-                                            CreateAt: new Date(),
-                                          });
-                                      });
-                                    })
-                                    .catch(error => {
-                                      console.log(
-                                        'Error getting documents: ',
-                                        error,
-                                      );
-                                    });
-                                }
-                              });
-                            } else {
-                              console.log('first like add');
-                              firestore()
-                                .collection('compassreal')
-                                .where('PostID', '==', item.PostID)
-                                .get()
-                                .then(querySnapshot => {
-                                  querySnapshot.forEach(doc => {
-                                    firestore()
-                                      .collection('compassreal')
-                                      .doc(doc.id)
-                                      .update({LikeCount: item.LikeCount + 1});
-                                    firestore()
-                                      .collection('compassreal')
-                                      .doc(doc.id)
-                                      .collection('Likes')
-                                      .add({
-                                        name: 'Udaya raj urs G',
-                                        userID: LoginID,
-                                        PostID: item.PostID,
-                                        CreateAt: new Date(),
-                                      });
-                                  });
-                                })
-                                .catch(error => {
-                                  console.log(
-                                    'Error getting documents: ',
-                                    error,
-                                  );
-                                });
-                            }
-                          });
-                      });
-                    })
-                    .catch(error => {
-                      console.log('Error getting documents: ', error);
-                    });
-                }}>
-                <Image
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: 'white',
-                    marginVertical: 15,
-                  }}
-                  source={imagePath.icLike}
-                />
-                <Text style={{color: '#FFF'}}>{item.LikeCount}</Text>
-              </TouchableOpacity>
-
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: 'white',
-
-                  marginVertical: 15,
-                }}
-                source={imagePath.icComment}
-              />
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: 'white',
-
-                  marginVertical: 15,
-                }}
-                source={imagePath.icShare}
-              />
-            </View>
-          </View>
-
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              source={{
-                uri: item.profilePic,
-              }}
-              style={styles.profileStyle}
-            />
-            <Text style={{marginHorizontal: 8, color: 'white'}}>
-              {item.userName}
-            </Text>
-            <TouchableOpacity>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Follow</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 8}}>
-            <Text numberOfLines={1} style={{flex: 1, color: 'white'}}>
-              {item.des}
-            </Text>
-            <TouchableOpacity>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>more</Text>
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
-      </View>
-    );
-  };
-
   const onChangeIndex = ({index}) => {
     setIndex(index);
   };
@@ -367,8 +152,17 @@ const Home = () => {
       <SwiperFlatList
         vertical={true}
         data={[...recentVideo, ...videos]}
-        renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        renderItem={({item, index}) => (
+          <VideoPlay
+            item={item}
+            index={index}
+            recentVideo={recentVideo}
+            currIndex={currIndex}
+            navigation={navigation}
+            LoginID={LoginID}
+          />
+        )}
         onChangeIndex={onChangeIndex}
         onEndReached={onChatListEndReached}
       />
