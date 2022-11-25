@@ -28,14 +28,6 @@ const Home = ({navigation}) => {
   const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
   let LoginID = '123456B';
 
-  const onBuffer = e => {
-    console.log('buffering....', e);
-  };
-
-  const onError = e => {
-    console.log('error raised', e);
-  };
-
   useEffect(() => {
     if (recentVideo.length === 0) {
       const messageRef = firestore()

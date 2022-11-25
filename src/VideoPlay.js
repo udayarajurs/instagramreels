@@ -21,9 +21,7 @@ const {height, width} = Dimensions.get('window');
 const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
   const videoRef = useRef(null);
   const [isLike, setLike] = useState(false);
-  const [likeCounts, setLikeCounts] = useState(item.likeCount);
-
-  console.log(item.likeCount);
+  const [likeCounts, setLikeCounts] = useState(0);
   const onBuffer = e => {
     console.log('buffering....', e);
   };
@@ -51,6 +49,8 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
             .then(querySnapshot => {
               if (querySnapshot.size > 0) {
                 querySnapshot.forEach(docLikeID => {
+                  console.log('useefft');
+                  setLikeCounts(querySnapshot.size);
                   if (docLikeID._data.userID === LoginID) {
                     setLike(true);
                   } else {
@@ -95,6 +95,11 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
           <View style={{position: 'absolute', right: 0}}>
             <TouchableOpacity
               onPress={() => {
+                {
+                  isLike
+                    ? (setLikeCounts(likeCounts - 1), setLike(false))
+                    : (setLikeCounts(likeCounts + 1), setLike(true));
+                }
                 firestore()
                   .collection('compassreal')
                   .where('PostID', '==', item.PostID)
@@ -110,14 +115,7 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                           if (querySnapshot.size > 0) {
                             querySnapshot.forEach(docLikeID => {
                               if (docLikeID._data.userID === LoginID) {
-                                setLike(false);
                                 console.log('like delete', doc.id);
-                                firestore()
-                                  .collection('compassreal')
-                                  .doc(doc.id)
-                                  .update({
-                                    LikeCount: item.LikeCount - 1,
-                                  });
                                 docLikeID.ref
                                   .delete()
                                   .then(() => {
@@ -132,7 +130,6 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                                     );
                                   });
                               } else {
-                                setLike(true);
                                 console.log('Add like');
                                 firestore()
                                   .collection('compassreal')
@@ -140,12 +137,6 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                                   .get()
                                   .then(querySnapshot => {
                                     querySnapshot.forEach(doc => {
-                                      firestore()
-                                        .collection('compassreal')
-                                        .doc(doc.id)
-                                        .update({
-                                          LikeCount: item.LikeCount + 1,
-                                        });
                                       firestore()
                                         .collection('compassreal')
                                         .doc(doc.id)
@@ -167,7 +158,6 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                               }
                             });
                           } else {
-                            setLike(true);
                             console.log('first like add');
                             firestore()
                               .collection('compassreal')
@@ -175,10 +165,6 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                               .get()
                               .then(querySnapshot => {
                                 querySnapshot.forEach(doc => {
-                                  firestore()
-                                    .collection('compassreal')
-                                    .doc(doc.id)
-                                    .update({LikeCount: item.LikeCount + 1});
                                   firestore()
                                     .collection('compassreal')
                                     .doc(doc.id)
