@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/Home';
 import VideoCompress from './src/VideoCompress';
+import Comment_Screen from './src/Comment_Screen';
 import AddPost from './src/AddPost';
 
 const Stack = createNativeStackNavigator();
@@ -26,10 +27,16 @@ function App() {
             headerShown: false,
           }}
         />
-
         <Stack.Screen
           name="VideoCompress"
           component={VideoCompress}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Comment_Screen"
+          component={Comment_Screen}
           options={{
             headerShown: false,
           }}

@@ -18,10 +18,18 @@ import firestore from '@react-native-firebase/firestore';
 
 const {height, width} = Dimensions.get('window');
 
-const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
+const VideoPlay = ({
+  navigation,
+  item,
+  index,
+  recentVideo,
+  currIndex,
+  LoginID,
+}) => {
   const videoRef = useRef(null);
   const [isLike, setLike] = useState(false);
   const [likeCounts, setLikeCounts] = useState(0);
+  const [DocId, setDocID] = useState('');
   const onBuffer = e => {
     console.log('buffering....', e);
   };
@@ -116,6 +124,7 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
                             querySnapshot.forEach(docLikeID => {
                               if (docLikeID._data.userID === LoginID) {
                                 console.log('like delete', doc.id);
+
                                 docLikeID.ref
                                   .delete()
                                   .then(() => {
@@ -219,16 +228,27 @@ const VideoPlay = ({item, index, recentVideo, currIndex, LoginID}) => {
               </Text>
             </TouchableOpacity>
 
-            <Image
-              style={{
-                width: 25,
-                height: 25,
-                tintColor: 'white',
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Comment_Screen', {
+                  name: item.userName,
+                  des: item.des,
+                  ProfilePic: item.profilePic,
+                  PostID: item.PostID,
+                  LoginID: LoginID,
+                });
+              }}>
+              <Image
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: 'white',
+                  marginVertical: 15,
+                }}
+                source={imagePath.icComment}
+              />
+            </TouchableOpacity>
 
-                marginVertical: 15,
-              }}
-              source={imagePath.icComment}
-            />
             <Image
               style={{
                 width: 25,
