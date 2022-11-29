@@ -42,6 +42,7 @@ const Comment_Screen = ({route}) => {
               PostID: PostID,
               createdAt: new Date(),
               CommentDes: discretion,
+              commentID: '123457',
             });
         });
       })
@@ -64,7 +65,7 @@ const Comment_Screen = ({route}) => {
         console.log('Error getting documents: ', error);
       });
 
-    if (documentsID !== undefined && recentChats.length === 0) {
+    if (documentsID !== undefined) {
       const messageRef = firestore()
         .collection('compassreal')
         .doc(documentsID)
