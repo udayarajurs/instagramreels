@@ -1,8 +1,55 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 const CommentCard = ({item}) => {
+  const [ReplaceComment, setReplaceComment] = useState([]);
+  const [updateSubComment, setUpdateSubComment] = useState(true);
+  useEffect(() => {
+    firestore()
+      .collection('compassreal')
+      .where('PostID', '==', item.PostID)
+      .get()
+      .then(querySnapshot1 => {
+        querySnapshot1.forEach(doc => {
+          firestore()
+            .collection('compassreal')
+            .doc(doc.id)
+            .collection('Comments')
+            .where('commentID', '==', item.commentID)
+            .get()
+            .then(querySnapshot2 => {
+              querySnapshot2.forEach(docCommentID => {
+                firestore()
+                  .collection('compassreal')
+                  .where('PostID', '==', item.PostID)
+                  .get()
+                  .then(querySnapshot3 => {
+                    querySnapshot3.forEach(doc => {
+                      firestore()
+                        .collection('compassreal')
+                        .doc(doc.id)
+                        .collection('Comments')
+                        .doc(docCommentID.id)
+                        .collection('ReplayComments')
+                        .get()
+                        .then(querySnapshot4 => {
+                          setReplaceComment([]);
+                          querySnapshot4.forEach(docreplayComment => {
+                            setReplaceComment(images => [
+                              ...images,
+                              docreplayComment._data,
+                            ]);
+                          });
+                        });
+                    });
+                  });
+              });
+            });
+        });
+      });
+  }, [updateSubComment]);
+
   return (
     <View style={{marginHorizontal: 15, marginVertical: 15}}>
       <View style={{flexDirection: 'row'}}>
@@ -25,6 +72,30 @@ const CommentCard = ({item}) => {
                       .get()
                       .then(querySnapshot => {
                         querySnapshot.forEach(docLikeID => {
+                          firestore()
+                            .collection('compassreal')
+                            .doc(doc.id)
+                            .collection('Comments')
+                            .doc(docLikeID.id)
+                            .collection('ReplayComments')
+                            .get()
+                            .then(querySnapshot22 => {
+                              querySnapshot22.forEach(docsubComment => {
+                                docsubComment.ref
+                                  .delete()
+                                  .then(() => {
+                                    console.log(
+                                      'Document successfully deleted!',
+                                    );
+                                  })
+                                  .catch(function (error) {
+                                    console.error(
+                                      'Error removing document: ',
+                                      error,
+                                    );
+                                  });
+                              });
+                            });
                           docLikeID.ref
                             .delete()
                             .then(() => {
@@ -53,6 +124,7 @@ const CommentCard = ({item}) => {
               .get()
               .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
+                  setUpdateSubComment(false);
                   firestore()
                     .collection('compassreal')
                     .doc(doc.id)
@@ -87,6 +159,19 @@ const CommentCard = ({item}) => {
         </TouchableOpacity>
       </View>
       <Text>{item.CommentDes}</Text>
+      <View>
+        <FlatList
+          contentContainerStyle={{flexGrow: 1}}
+          showsVerticalScrollIndicator={false}
+          data={ReplaceComment}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+            <View>
+              <Text>{item.CommentDes}</Text>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 };

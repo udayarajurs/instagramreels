@@ -29,6 +29,7 @@ const VideoPlay = ({
   const videoRef = useRef(null);
   const [isLike, setLike] = useState(false);
   const [likeCounts, setLikeCounts] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
   const [DocId, setDocID] = useState('');
   const onBuffer = e => {
     console.log('buffering....', e);
@@ -64,6 +65,21 @@ const VideoPlay = ({
                   } else {
                     setLike(false);
                   }
+                });
+              }
+            });
+        });
+
+        querySnapshot.forEach(doc => {
+          firestore()
+            .collection('compassreal')
+            .doc(doc.id)
+            .collection('Comments')
+            .get()
+            .then(querySnapshot => {
+              if (querySnapshot.size > 0) {
+                querySnapshot.forEach(docLikeID => {
+                  setCommentCount(querySnapshot.size);
                 });
               }
             });
@@ -247,6 +263,9 @@ const VideoPlay = ({
                 }}
                 source={imagePath.icComment}
               />
+              <Text style={{color: '#FFF', marginStart: 7, fontWeight: 'bold'}}>
+                {commentCount}
+              </Text>
             </TouchableOpacity>
 
             <Image
