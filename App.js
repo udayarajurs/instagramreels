@@ -6,6 +6,7 @@ import Home from './src/Home';
 import VideoCompress from './src/VideoCompress';
 import Comment_Screen from './src/Comment_Screen';
 import AddPost from './src/AddPost';
+import AudioPage from './src/AudioPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,13 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="AudioPage"
+          component={AudioPage}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
