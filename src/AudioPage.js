@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Play_button from './Play_button.png';
+import Pause_button from './Pause_button.png';
 
 var Sound = require('react-native-sound');
 
@@ -51,21 +53,25 @@ const App = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.playBtn} onPress={playPause}>
-        <Ionicons
-          name={playing ? 'ios-pause-outline' : 'ios-play-outline'}
-          size={36}
-          color={'#fff'}
-        />
+        {playing ? (
+          <Image
+            style={{width: 50, height: 50}}
+            source={require('./Pause_button.png')}
+          />
+        ) : (
+          <Image
+            style={{width: 50, height: 50}}
+            source={require('./Play_button.png')}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#000',
   },
   playBtn: {
     padding: 20,
