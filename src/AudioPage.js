@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Play_button from './Play_button.png';
 import Pause_button from './Pause_button.png';
@@ -27,6 +27,11 @@ var audio = new Sound(
 );
 const App = () => {
   const [playing, setPlaying] = useState();
+  const [seconds, setSeconds] = useState(
+    audio.getCurrentTime(seconds => {
+      setSeconds(seconds);
+    }) || 0,
+  );
   useEffect(() => {
     audio.setVolume(1);
     return () => {
@@ -50,6 +55,11 @@ const App = () => {
       });
     }
   };
+
+  let ShowTime = seconds.toString().replace('.', '');
+  let min = Math.floor((parseInt(ShowTime) / 1000 / 60) << 0);
+  let sec = Math.floor((parseInt(ShowTime) / 1000) % 60);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.playBtn} onPress={playPause}>
@@ -65,6 +75,22 @@ const App = () => {
           />
         )}
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          audio.setCurrentTime(seconds + 10.0);
+        }}>
+        <Text>Forword 10</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          audio.setCurrentTime(seconds - 10.0);
+        }}>
+        <Text>Backword -10</Text>
+      </TouchableOpacity>
+
+      <Text>{min + ':' + sec}</Text>
     </View>
   );
 };
