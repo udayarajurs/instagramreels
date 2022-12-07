@@ -3,6 +3,7 @@ import {View, StyleSheet, TouchableOpacity, Image, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Play_button from './Play_button.png';
 import Pause_button from './Pause_button.png';
+import Slider from '@react-native-community/slider';
 
 var Sound = require('react-native-sound');
 
@@ -17,6 +18,7 @@ var audio = new Sound(
       return;
     }
     // if loaded successfully
+
     console.log(
       'duration in seconds: ' +
         audio.getDuration() +
@@ -32,6 +34,7 @@ const App = () => {
       setSeconds(seconds);
     }) || 0,
   );
+
   useEffect(() => {
     audio.setVolume(1);
     return () => {
@@ -59,6 +62,14 @@ const App = () => {
   let ShowTime = seconds.toString().replace('.', '');
   let min = Math.floor((parseInt(ShowTime) / 1000 / 60) << 0);
   let sec = Math.floor((parseInt(ShowTime) / 1000) % 60);
+
+  let TiemFull = audio.getDuration();
+  let totalSongDuration = TiemFull.toString().replace('.', '');
+  let totalSongDurationTime = Math.floor(
+    (parseInt(totalSongDuration) / 1000) % 60,
+  );
+
+  console.log(totalSongDurationTime);
 
   return (
     <View style={styles.container}>
@@ -91,6 +102,15 @@ const App = () => {
       </TouchableOpacity>
 
       <Text>{min + ':' + sec}</Text>
+
+      <Slider
+        style={{width: 200, height: 40}}
+        minimumValue={0}
+        maximumValue={totalSongDurationTime}
+        value={sec}
+        minimumTrackTintColor="#FFFFFF"
+        maximumTrackTintColor="#000000"
+      />
     </View>
   );
 };
