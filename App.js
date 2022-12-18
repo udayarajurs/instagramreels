@@ -15,19 +15,21 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="LoginPage"
-          component={LoginPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
           name="Home"
           component={Home}
           options={{
             headerShown: false,
           }}
         />
+
+        <Stack.Screen
+          name="LoginPage"
+          component={LoginPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen
           name="AddPost"
           component={AddPost}

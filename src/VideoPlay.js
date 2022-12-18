@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Video from 'react-native-video';
+import {useIsFocused} from '@react-navigation/native';
 import imagePath from './constants/imagePath';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {data} from './constants/data';
 import LinearGradient from 'react-native-linear-gradient';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const {height, width} = Dimensions.get('window');
 
@@ -25,12 +27,15 @@ const VideoPlay = ({
   recentVideo,
   currIndex,
   LoginID,
+  userName,
 }) => {
+  const isFocused = useIsFocused();
   const videoRef = useRef(null);
   const [isLike, setLike] = useState(false);
   const [likeCounts, setLikeCounts] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
   const [LikeUpadet, setLikeUpadet] = useState(false);
+  const userID = auth()?.currentUser?.uid;
   const onBuffer = e => {
     console.log('buffering....', e);
   };
@@ -117,7 +122,7 @@ const VideoPlay = ({
             marginVertical: 8,
             marginBottom: 175,
           }}>
-          {LikeUpadet ? (
+          {LikeUpadet && userID ? (
             <View>
               <View style={{position: 'absolute', right: 0}}>
                 <TouchableOpacity
@@ -170,7 +175,7 @@ const VideoPlay = ({
                                             .doc(doc.id)
                                             .collection('Likes')
                                             .add({
-                                              name: 'Udaya raj urs G',
+                                              name: userName,
                                               userID: LoginID,
                                               PostID: item.PostID,
                                               CreateAt: new Date(),
@@ -198,7 +203,7 @@ const VideoPlay = ({
                                         .doc(doc.id)
                                         .collection('Likes')
                                         .add({
-                                          name: 'Udaya raj urs G',
+                                          name: userName,
                                           userID: LoginID,
                                           PostID: item.PostID,
                                           CreateAt: new Date(),

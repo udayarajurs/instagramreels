@@ -11,6 +11,7 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import Video from 'react-native-video';
 import imagePath from './constants/imagePath';
+import {useIsFocused} from '@react-navigation/native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {data} from './constants/data';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,15 +22,31 @@ import auth from '@react-native-firebase/auth';
 const {height, width} = Dimensions.get('window');
 
 const Home = ({navigation}) => {
+  const isFocused = useIsFocused();
   const videoRef = useRef(null);
   const VIDEO_LIMIT = 2;
+  const [userName, setUserName] = useState('');
   const [currIndex, setIndex] = useState(0);
   const [recentVideo, setRecentVideo] = useState([]);
   const [videos, setVideos] = useState([]);
+  const userID = auth()?.currentUser?.uid;
   const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
-  let LoginID = '123456B';
+
+  let LoginID = auth()?.currentUser?.uid;
 
   useEffect(() => {
+    firestore()
+      .collection('user')
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          setUserName(doc._data.userName);
+        });
+      })
+      .catch(error => {
+        console.log('Error getting documents: ', error);
+      });
+
     if (recentVideo.length === 0) {
       const messageRef = firestore()
         .collection('compassreal')
@@ -154,6 +171,7 @@ const Home = ({navigation}) => {
             currIndex={currIndex}
             navigation={navigation}
             LoginID={LoginID}
+            userName={userName}
           />
         )}
         onChangeIndex={onChangeIndex}
@@ -163,12 +181,23 @@ const Home = ({navigation}) => {
       <View style={{position: 'absolute', top: 20, left: 16}}>
         <Text style={styles.textStyle}>Reels</Text>
       </View>
-      <View style={{position: 'absolute', top: 20, right: 16}}>
-        <Image
-          style={{width: 25, height: 25, tintColor: 'white'}}
-          source={imagePath.icCamera}
-        />
-      </View>
+      {userID ? (
+        <View style={{position: 'absolute', top: 20, right: 16}}>
+          <Image
+            style={{width: 25, height: 25, tintColor: 'white'}}
+            source={imagePath.icCamera}
+          />
+        </View>
+      ) : (
+        <View style={{position: 'absolute', top: 20, right: 16}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('LoginPage');
+            }}>
+            <Text style={styles.textStyle}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
