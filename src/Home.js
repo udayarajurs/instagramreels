@@ -16,6 +16,7 @@ import {data} from './constants/data';
 import LinearGradient from 'react-native-linear-gradient';
 import firestore from '@react-native-firebase/firestore';
 import VideoPlay from './VideoPlay';
+import auth from '@react-native-firebase/auth';
 
 const {height, width} = Dimensions.get('window');
 

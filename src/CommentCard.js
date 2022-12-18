@@ -55,7 +55,7 @@ const CommentCard = ({item}) => {
       <View style={{flexDirection: 'row'}}>
         <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
 
-        {item.userID === '123456B' ? (
+        {/* {item.userID === '123456B' ? (
           <TouchableOpacity
             onPress={() => {
               firestore()
@@ -72,38 +72,15 @@ const CommentCard = ({item}) => {
                       .get()
                       .then(querySnapshot => {
                         querySnapshot.forEach(docLikeID => {
-                          firestore()
-                            .collection('compassreal')
-                            .doc(doc.id)
-                            .collection('Comments')
-                            .doc(docLikeID.id)
-                            .collection('ReplayComments')
-                            .get()
-                            .then(querySnapshot22 => {
-                              querySnapshot22.forEach(docsubComment => {
-                                docsubComment.ref
-                                  .delete()
-                                  .then(() => {
-                                    console.log(
-                                      'Document successfully deleted!',
-                                    );
-                                  })
-                                  .catch(function (error) {
-                                    console.error(
-                                      'Error removing document: ',
-                                      error,
-                                    );
-                                  });
-                              });
-                            });
-                          docLikeID.ref
-                            .delete()
-                            .then(() => {
-                              console.log('Document successfully deleted!');
-                            })
-                            .catch(function (error) {
-                              console.error('Error removing document: ', error);
-                            });
+                          // docLikeID.ref
+                          //   .delete()
+                          //   .then(() => {
+                          //     console.log('Document successfully deleted!');
+                          //   })
+                          //   .catch(function (error) {
+                          //     console.error('Error removing document: ', error);
+                          //   });
+                          console.log(docLikeID.id);
                         });
                       });
                   });
@@ -114,9 +91,9 @@ const CommentCard = ({item}) => {
           </TouchableOpacity>
         ) : (
           <View />
-        )}
+        )} */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             firestore()
               .collection('compassreal')
@@ -156,7 +133,7 @@ const CommentCard = ({item}) => {
               });
           }}>
           <Text style={{marginStart: 15}}>RePlay the comment</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <Text>{item.CommentDes}</Text>
       <View>

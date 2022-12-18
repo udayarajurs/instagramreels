@@ -1089,7 +1089,7 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
-"@expo/config-plugins@^5.0.1":
+"@expo/config-plugins@^5.0.1", "@expo/config-plugins@^5.0.4":
   "integrity" "sha512-vzUcVpqOMs3h+hyRdhGwk+eGIOhXa5xYdd92yO17RMNHav3v/+ekMbs7XA2c3lepMO8Yd4/5hqmRw9ZTL6jGzg=="
   "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-5.0.4.tgz"
   "version" "5.0.4"
@@ -1647,7 +1647,7 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.3.3.tgz"
   "version" "4.3.3"
 
-"@react-native-firebase/app@^16.4.3", "@react-native-firebase/app@15.7.0", "@react-native-firebase/app@16.4.3":
+"@react-native-firebase/app@^16.4.3", "@react-native-firebase/app@15.7.0", "@react-native-firebase/app@16.4.3", "@react-native-firebase/app@16.5.0":
   "integrity" "sha512-6cXm4D3CIVK3N8WMAz+vL/rzjKmoAuFdtdnjLTYsFU/fsQGcsKkZSGiWfMbZASCwcnspRR1/FjyRC5Y4tzqiuA=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-16.4.3.tgz"
   "version" "16.4.3"
@@ -1655,6 +1655,14 @@
     "@expo/config-plugins" "^5.0.1"
     "opencollective-postinstall" "^2.0.1"
     "superstruct" "^0.6.2"
+
+"@react-native-firebase/auth@^16.5.0":
+  "integrity" "sha512-LV3x5I7vMGHhqPqKo+lgLlxQMlFYKF2hYX/F51NmXsL+QXesfUvIWMm8YyUNwspc928QD7PU2mY37V5lrvYuSg=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-16.5.0.tgz"
+  "version" "16.5.0"
+  dependencies:
+    "@expo/config-plugins" "^5.0.4"
+    "plist" "^3.0.5"
 
 "@react-native-firebase/firestore@^15.2.0":
   "integrity" "sha512-lcMApKFIo4k9GqOUuK03WBDs3JP0pa94jTmy+hZQLAqyeA78GYC57CzGGKCkR0qtwCzMtE8HXqICY9FKv4rxpg=="

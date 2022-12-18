@@ -30,7 +30,7 @@ const VideoPlay = ({
   const [isLike, setLike] = useState(false);
   const [likeCounts, setLikeCounts] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const [DocId, setDocID] = useState('');
+  const [LikeUpadet, setLikeUpadet] = useState(false);
   const onBuffer = e => {
     console.log('buffering....', e);
   };
@@ -65,6 +65,7 @@ const VideoPlay = ({
                   } else {
                     setLike(false);
                   }
+                  setLikeUpadet(true);
                 });
               }
             });
@@ -114,48 +115,78 @@ const VideoPlay = ({
           style={{
             ...styles.flexHorziontal,
             marginVertical: 8,
-            marginBottom: 75,
+            marginBottom: 175,
           }}>
-          <View style={{position: 'absolute', right: 0}}>
-            <TouchableOpacity
-              onPress={() => {
-                {
-                  isLike
-                    ? (setLikeCounts(likeCounts - 1), setLike(false))
-                    : (setLikeCounts(likeCounts + 1), setLike(true));
-                }
-                firestore()
-                  .collection('compassreal')
-                  .where('PostID', '==', item.PostID)
-                  .get()
-                  .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                      firestore()
-                        .collection('compassreal')
-                        .doc(doc.id)
-                        .collection('Likes')
-                        .get()
-                        .then(querySnapshot => {
-                          if (querySnapshot.size > 0) {
-                            querySnapshot.forEach(docLikeID => {
-                              if (docLikeID._data.userID === LoginID) {
-                                console.log('like delete', doc.id);
+          {LikeUpadet ? (
+            <View>
+              <View style={{position: 'absolute', right: 0}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    {
+                      isLike
+                        ? (setLikeCounts(likeCounts - 1), setLike(false))
+                        : (setLikeCounts(likeCounts + 1), setLike(true));
+                    }
+                    firestore()
+                      .collection('compassreal')
+                      .where('PostID', '==', item.PostID)
+                      .get()
+                      .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                          firestore()
+                            .collection('compassreal')
+                            .doc(doc.id)
+                            .collection('Likes')
+                            .get()
+                            .then(querySnapshot => {
+                              if (querySnapshot.size > 0) {
+                                querySnapshot.forEach(docLikeID => {
+                                  if (docLikeID._data.userID === LoginID) {
+                                    console.log('like delete', doc.id);
 
-                                docLikeID.ref
-                                  .delete()
-                                  .then(() => {
-                                    console.log(
-                                      'Document successfully deleted!',
-                                    );
-                                  })
-                                  .catch(function (error) {
-                                    console.error(
-                                      'Error removing document: ',
-                                      error,
-                                    );
-                                  });
+                                    docLikeID.ref
+                                      .delete()
+                                      .then(() => {
+                                        console.log(
+                                          'Document successfully deleted!',
+                                        );
+                                      })
+                                      .catch(function (error) {
+                                        console.error(
+                                          'Error removing document: ',
+                                          error,
+                                        );
+                                      });
+                                  } else {
+                                    console.log('Add like');
+                                    firestore()
+                                      .collection('compassreal')
+                                      .where('PostID', '==', item.PostID)
+                                      .get()
+                                      .then(querySnapshot => {
+                                        querySnapshot.forEach(doc => {
+                                          firestore()
+                                            .collection('compassreal')
+                                            .doc(doc.id)
+                                            .collection('Likes')
+                                            .add({
+                                              name: 'Udaya raj urs G',
+                                              userID: LoginID,
+                                              PostID: item.PostID,
+                                              CreateAt: new Date(),
+                                            });
+                                        });
+                                      })
+                                      .catch(error => {
+                                        console.log(
+                                          'Error getting documents: ',
+                                          error,
+                                        );
+                                      });
+                                  }
+                                });
                               } else {
-                                console.log('Add like');
+                                console.log('first like add');
                                 firestore()
                                   .collection('compassreal')
                                   .where('PostID', '==', item.PostID)
@@ -182,103 +213,89 @@ const VideoPlay = ({
                                   });
                               }
                             });
-                          } else {
-                            console.log('first like add');
-                            firestore()
-                              .collection('compassreal')
-                              .where('PostID', '==', item.PostID)
-                              .get()
-                              .then(querySnapshot => {
-                                querySnapshot.forEach(doc => {
-                                  firestore()
-                                    .collection('compassreal')
-                                    .doc(doc.id)
-                                    .collection('Likes')
-                                    .add({
-                                      name: 'Udaya raj urs G',
-                                      userID: LoginID,
-                                      PostID: item.PostID,
-                                      CreateAt: new Date(),
-                                    });
-                                });
-                              })
-                              .catch(error => {
-                                console.log('Error getting documents: ', error);
-                              });
-                          }
                         });
-                    });
-                  })
-                  .catch(error => {
-                    console.log('Error getting documents: ', error);
-                  });
-              }}>
-              {isLike ? (
+                      })
+                      .catch(error => {
+                        console.log('Error getting documents: ', error);
+                      });
+                  }}>
+                  {isLike ? (
+                    <View>
+                      <Image
+                        style={{
+                          width: 25,
+                          height: 25,
+                          tintColor: 'red',
+                          marginVertical: 15,
+                        }}
+                        source={require('./assets/images/heart.png')}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <Image
+                        style={{
+                          width: 25,
+                          height: 25,
+                          tintColor: 'white',
+                          marginVertical: 15,
+                        }}
+                        source={imagePath.icLike}
+                      />
+                    </View>
+                  )}
+
+                  <Text
+                    style={{color: '#FFF', marginStart: 7, fontWeight: 'bold'}}>
+                    {likeCounts}
+                  </Text>
+                </TouchableOpacity>
+
                 <View>
-                  <Image
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: 'red',
-                      marginVertical: 15,
-                    }}
-                    source={imagePath.icLike}
-                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Comment_Screen', {
+                        name: item.userName,
+                        des: item.des,
+                        ProfilePic: item.profilePic,
+                        PostID: item.PostID,
+                        LoginID: LoginID,
+                      });
+                    }}>
+                    <Image
+                      style={{
+                        width: 25,
+                        height: 25,
+                        tintColor: 'white',
+                        marginVertical: 15,
+                      }}
+                      source={imagePath.icComment}
+                    />
+                    <Text
+                      style={{
+                        color: '#FFF',
+                        marginStart: 7,
+                        fontWeight: 'bold',
+                      }}>
+                      {commentCount}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-              ) : (
-                <View>
-                  <Image
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: 'white',
-                      marginVertical: 15,
-                    }}
-                    source={imagePath.icLike}
-                  />
-                </View>
-              )}
 
-              <Text style={{color: '#FFF', marginStart: 7, fontWeight: 'bold'}}>
-                {likeCounts}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Comment_Screen', {
-                  name: item.userName,
-                  des: item.des,
-                  ProfilePic: item.profilePic,
-                  PostID: item.PostID,
-                  LoginID: LoginID,
-                });
-              }}>
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: 'white',
-                  marginVertical: 15,
-                }}
-                source={imagePath.icComment}
-              />
-              <Text style={{color: '#FFF', marginStart: 7, fontWeight: 'bold'}}>
-                {commentCount}
-              </Text>
-            </TouchableOpacity>
-
-            <Image
-              style={{
-                width: 25,
-                height: 25,
-                tintColor: 'white',
-
-                marginVertical: 15,
-              }}
-              source={imagePath.icShare}
-            />
-          </View>
+                <Image
+                  style={{
+                    width: 25,
+                    height: 25,
+                    tintColor: 'white',
+                    marginVertical: 15,
+                  }}
+                  source={imagePath.icShare}
+                />
+              </View>
+            </View>
+          ) : (
+            <View />
+          )}
         </View>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

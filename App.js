@@ -6,7 +6,7 @@ import Home from './src/Home';
 import VideoCompress from './src/VideoCompress';
 import Comment_Screen from './src/Comment_Screen';
 import AddPost from './src/AddPost';
-import AudioPage from './src/AudioPage';
+import LoginPage from './src/LoginPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +15,8 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="AudioPage"
-          component={AudioPage}
+          name="LoginPage"
+          component={LoginPage}
           options={{
             headerShown: false,
           }}
