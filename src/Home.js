@@ -30,9 +30,8 @@ const Home = ({navigation}) => {
   const [recentVideo, setRecentVideo] = useState([]);
   const [videos, setVideos] = useState([]);
   const userID = auth()?.currentUser?.uid;
-  const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
-
   let LoginID = auth()?.currentUser?.uid;
+  const [moreVideoAvailable, setMoreVideoAvailable] = useState(true);
 
   useEffect(() => {
     firestore()
@@ -183,10 +182,17 @@ const Home = ({navigation}) => {
       </View>
       {userID ? (
         <View style={{position: 'absolute', top: 20, right: 16}}>
-          <Image
-            style={{width: 25, height: 25, tintColor: 'white'}}
-            source={imagePath.icCamera}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('AddPost', {
+                UserName: userName,
+              });
+            }}>
+            <Image
+              style={{width: 25, height: 25, tintColor: 'white'}}
+              source={imagePath.icCamera}
+            />
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={{position: 'absolute', top: 20, right: 16}}>

@@ -304,12 +304,20 @@ const VideoPlay = ({
         </View>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            source={{
-              uri: item.profilePic,
-            }}
-            style={styles.profileStyle}
-          />
+          {item.profilePic ? (
+            <Image
+              source={{
+                uri: item.profilePic,
+              }}
+              style={styles.profileStyle}
+            />
+          ) : (
+            <Image
+              source={require('./assets/images/download.jpg')}
+              style={styles.profileStyle}
+            />
+          )}
+
           <Text style={{marginHorizontal: 8, color: 'white'}}>
             {item.userName}
           </Text>
