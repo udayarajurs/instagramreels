@@ -3,52 +3,9 @@ import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 const CommentCard = ({item}) => {
-  const [ReplaceComment, setReplaceComment] = useState([]);
-  const [updateSubComment, setUpdateSubComment] = useState(true);
-  useEffect(() => {
-    firestore()
-      .collection('compassreal')
-      .where('PostID', '==', item.PostID)
-      .get()
-      .then(querySnapshot1 => {
-        querySnapshot1.forEach(doc => {
-          firestore()
-            .collection('compassreal')
-            .doc(doc.id)
-            .collection('Comments')
-            .where('commentID', '==', item.commentID)
-            .get()
-            .then(querySnapshot2 => {
-              querySnapshot2.forEach(docCommentID => {
-                firestore()
-                  .collection('compassreal')
-                  .where('PostID', '==', item.PostID)
-                  .get()
-                  .then(querySnapshot3 => {
-                    querySnapshot3.forEach(doc => {
-                      firestore()
-                        .collection('compassreal')
-                        .doc(doc.id)
-                        .collection('Comments')
-                        .doc(docCommentID.id)
-                        .collection('ReplayComments')
-                        .get()
-                        .then(querySnapshot4 => {
-                          setReplaceComment([]);
-                          querySnapshot4.forEach(docreplayComment => {
-                            setReplaceComment(images => [
-                              ...images,
-                              docreplayComment._data,
-                            ]);
-                          });
-                        });
-                    });
-                  });
-              });
-            });
-        });
-      });
-  }, [updateSubComment]);
+  // const [ReplaceComment, setReplaceComment] = useState([]);
+  // const [updateSubComment, setUpdateSubComment] = useState(true);
+  // useEffect(() => {}, [updateSubComment]);
 
   return (
     <View style={{marginHorizontal: 15, marginVertical: 15}}>
@@ -136,7 +93,7 @@ const CommentCard = ({item}) => {
         </TouchableOpacity> */}
       </View>
       <Text>{item.CommentDes}</Text>
-      <View>
+      {/* <View>
         <FlatList
           contentContainerStyle={{flexGrow: 1}}
           showsVerticalScrollIndicator={false}
@@ -148,7 +105,7 @@ const CommentCard = ({item}) => {
             </View>
           )}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

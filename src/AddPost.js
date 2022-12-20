@@ -15,52 +15,59 @@ const AddPost = ({navigation, route}) => {
   const [uploading, setUploading] = useState(true);
   const [transferred, setTransferred] = useState(0);
 
-  const uploadImage = async () => {
-    const {uri} = image;
-    const filename = uri.substring(uri.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    setUploading(true);
-    setTransferred(0);
-    const task = storage().ref(filename).putFile(uploadUri);
-    // set progress state
-    task.on('state_changed', snapshot => {
-      setTransferred(
-        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
-      );
-    });
-    try {
-      await task;
-    } catch (e) {
-      console.error(e);
-    }
-    setUploading(false);
-    Alert.alert(
-      'Photo uploaded!',
-      'Your photo has been uploaded to Firebase Cloud Storage!',
+  const onSend = async () => {
+    const storageRef = storage().ref().child(`/Video/${Date.now()}`);
+    const imageRef = storage().ref().child(`/Image/${Date.now()}`);
+
+    const uploadTask = storageRef.putFile(videoLink);
+    const uploadTaskImage = imageRef.putFile(ThubLine);
+
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      error => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        storageRef.getDownloadURL().then(downloadURL => {
+          uploadTaskImage.on(
+            'state_changed',
+            snapshot => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            },
+            error => {
+              // Handle unsuccessful uploads
+            },
+            () => {
+              imageRef.getDownloadURL().then(downloadURLImage => {
+                const Reels = {
+                  createdAt: new Date(),
+                  userName: UserName,
+                  userID: userID,
+                  profilePic: profilePic,
+                  des: des,
+                  videoLink: downloadURL,
+                  ThubLine: downloadURLImage,
+                  LikeCount: 0,
+                  PostID: userID + new Date(),
+                };
+                console.log(Reels);
+                firestore()
+                  .collection('compassreal')
+                  .add({...Reels})
+                  .then(() => {
+                    navigation.goBack();
+                  });
+              });
+            },
+          );
+        });
+      },
     );
-    setThubLine(null);
-  };
-
-  const onSend = () => {
-    const Reels = {
-      createdAt: new Date(),
-      userName: UserName,
-      userID: userID,
-      profilePic: profilePic,
-      des: des,
-      videoLink: videoLink,
-      ThubLine: ThubLine,
-      LikeCount: 0,
-      PostID: userID + new Date(),
-    };
-    console.log(Reels);
-
-    firestore()
-      .collection('compassreal')
-      .add({...Reels})
-      .then(() => {
-        console.log('Add datd');
-      });
   };
 
   const AddVideo = () => {

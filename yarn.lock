@@ -2364,6 +2364,11 @@
   "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   "version" "1.0.2"
 
+"base-64@^0.1.0":
+  "integrity" "sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA=="
+  "resolved" "https://registry.npmjs.org/base-64/-/base-64-0.1.0.tgz"
+  "version" "0.1.0"
+
 "base@^0.11.1":
   "integrity" "sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg=="
   "resolved" "https://registry.npmjs.org/base/-/base-0.11.2.tgz"
@@ -6188,6 +6193,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   "version" "18.2.0"
 
+"react-native-base64@^0.2.1":
+  "integrity" "sha512-eHgt/MA8y5ZF0aHfZ1aTPcIkDWxza9AaEk4GcpIX+ZYfZ04RcaNahO+527KR7J44/mD3efYfM23O2C1N44ByWA=="
+  "resolved" "https://registry.npmjs.org/react-native-base64/-/react-native-base64-0.2.1.tgz"
+  "version" "0.2.1"
+
 "react-native-codegen@^0.70.6":
   "integrity" "sha512-kdwIhH2hi+cFnG5Nb8Ji2JwmcCxnaOOo9440ov7XDzSvGfmUStnCzl+MCW8jLjqHcE4icT7N9y+xx4f50vfBTw=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.70.6.tgz"
@@ -6202,6 +6212,14 @@
   "integrity" "sha512-SmyRPWIQY7RPz50bXkkhLcIjoMMIB62rJJls9cG7XCeMIN/I8TFijmXZjEWrgzRlUMBa0JMr7AIXSLvcMp9hfA=="
   "resolved" "https://registry.npmjs.org/react-native-compressor/-/react-native-compressor-1.6.1.tgz"
   "version" "1.6.1"
+
+"react-native-fs@^2.20.0":
+  "integrity" "sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ=="
+  "resolved" "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.20.0.tgz"
+  "version" "2.20.0"
+  dependencies:
+    "base-64" "^0.1.0"
+    "utf8" "^3.0.0"
 
 "react-native-gesture-handler@>= 1.0.0":
   "integrity" "sha512-poOSfz/w0IyD6Qwq7aaIRRfEaVTl1ecQFoyiIbpOpfNTjm2B1niY2FLrdVQIOtIOe+K9nH55Qal04nr4jGkHdQ=="
@@ -7527,6 +7545,11 @@
   "integrity" "sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ=="
   "resolved" "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
   "version" "3.1.1"
+
+"utf8@^3.0.0":
+  "integrity" "sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ=="
+  "resolved" "https://registry.npmjs.org/utf8/-/utf8-3.0.0.tgz"
+  "version" "3.0.0"
 
 "util-deprecate@^1.0.1", "util-deprecate@~1.0.1":
   "integrity" "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="

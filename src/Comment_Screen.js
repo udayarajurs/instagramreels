@@ -42,7 +42,7 @@ const Comment_Screen = ({route}) => {
               PostID: PostID,
               createdAt: new Date(),
               CommentDes: discretion,
-              commentID: '123457',
+              commentID: LoginID + new Date(),
             });
         });
       })
@@ -55,6 +55,7 @@ const Comment_Screen = ({route}) => {
     firestore()
       .collection('compassreal')
       .where('PostID', '==', PostID)
+      .orderBy('createdAt', 'desc')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {

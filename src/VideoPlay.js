@@ -108,7 +108,7 @@ const VideoPlay = ({
         resizeMode="cover"
         onBuffer={onBuffer}
         onError={onError}
-        //paused={currIndex !== index}
+        // paused={currIndex !== index}
         paused={true}
         repeat
         style={styles.backgroundVideo}
@@ -122,7 +122,7 @@ const VideoPlay = ({
             marginVertical: 8,
             marginBottom: 175,
           }}>
-          {LikeUpadet && userID ? (
+          {userID ? (
             <View>
               <View style={{position: 'absolute', right: 0}}>
                 <TouchableOpacity
